@@ -1,7 +1,6 @@
 // Esta função será chamada com os dados da API
 function handleResponse(data) {
     console.log(data);
-    alert(console.error(data));// Aqui você pode ver os dados recebidos no console para depuração
 
     // Estruture os dados recebidos em um formato mais legível ou conforme necessário
     const dadosFormatados = {
@@ -9,6 +8,8 @@ function handleResponse(data) {
         'Nome': data.nome,
         // Verifique se 'atividade_principal' existe para evitar erros
         'Atividade Principal': data.atividade_principal ? data.atividade_principal.map(ap => ap.text).join(', ') : '',
+        'Data de abertura': data.abertura,
+
         // Adicione mais campos conforme necessário
     };
 
