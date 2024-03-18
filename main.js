@@ -1,3 +1,26 @@
+// Mascara para o input de visualização do CNPJ
+const inputCNPJView = document.getElementById('cnpjView');
+const inputCNPJ = document.getElementById('cnpjInput');
+
+inputCNPJView.addEventListener('input', () => {
+    let cnpj = inputCNPJView.value;
+
+    // Remove caracteres que não são números para formar a base do CNPJ não formatado
+    const cleanCNPJ = cnpj.replace(/\D/g, '');
+
+    // Atualiza o valor oculto do campo com o CNPJ não formatado
+    inputCNPJ.value = cleanCNPJ;
+
+    // Aplica a máscara de CNPJ (XX.XXX.XXX/XXXX-XX) para visualização
+    cnpj = cleanCNPJ.replace(/^(\d{2})(\d)/, "$1.$2");
+    cnpj = cnpj.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+    cnpj = cnpj.replace(/\.(\d{3})(\d)/, ".$1/$2");
+    cnpj = cnpj.replace(/(\d{4})(\d)/, "$1-$2");
+
+    // Atualiza o valor do campo de visualização com a máscara
+    inputCNPJView.value = cnpj;
+});
+
 // Esta função será chamada com os dados da API
 function handleResponse(data) {
     console.log(data);
@@ -52,8 +75,8 @@ function renderizarDados(dados) {
 }
 
 document.getElementById('SubmitButtonSearch').addEventListener('click', function () {
-
-    const cnpj = document.getElementById('cnpjInput').value;
+    // Usa o valor não formatado para a chamada da API
+    const cnpj = inputCNPJ.value; 
     const script = document.createElement('script');
     script.src = `https://receitaws.com.br/v1/cnpj/${cnpj}?callback=handleResponse`;
     document.body.appendChild(script);
